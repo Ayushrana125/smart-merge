@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Merge by Aranix</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #f8fbff;
+      color: #1e1e2f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: #0d47a1; /* Deep blue */
+      margin-bottom: 0.3rem;
+    }
+
+    h2 {
+      color: #444;
+      font-weight: normal;
+      margin-top: 0;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 380px;
+    }
+
+    input[type="file"] {
+      margin: 1rem 0;
+    }
+
+    button {
+      background-color: #0d47a1;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #1565c0;
+    }
+
+    #status {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    .success {
+      color: #0c9c3f;
+    }
+
+    .error {
+      color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Smart Merge</h1>
+    <h2>by Aranix</h2>
+
+    <form id="uploadForm">
+      <input type="file" name="files" id="files" multiple required>
+      <br>
+      <button type="submit">Merge Files</button>
+    </form>
+
+    <p id="status"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    const statusText = document.getElementById("status");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const files = document.getElementById("files").files;
+      if (!files.length) {
+        alert("Please select at least one file!");
+        return;
+      }
+
+      statusText.textContent = "⏳ Uploading and merging...";
+      statusText.className = "";
+
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+      }
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000/merge", {
+          method: "POST",
+          body: formData
+        });
+
+        if (!response.ok) {
+          statusText.textContent = "❌ Error merging files.";
+          statusText.className = "error";
+          return;
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "merged.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        statusText.textContent = "✅ File merged successfully! Download started.";
+        statusText.className = "success";
+      } catch (err) {
+        statusText.textContent = "⚠️ Failed: " + err.message;
+        statusText.className = "error";
+      }
+    });
+  </script>
+</body>
+</html>
