@@ -2,98 +2,180 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Excel Helper by Aranix</title>
+  <title>Excel Helper — Aranix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      --primary: #1976d2;
-      --primary-dark: #0d47a1;
-      --light: #e3eaf7;
-      --coming: #e3eaf7;
-      --coming-text: #888;
+      --bg: #06091a;
+      --card: #0b1220;
+      --text: #e7eefc;
+      --muted: #95a0b8;
+      --primary: #2f7df6;
+      --primary-dark: #1f61d6;
+      --radius: 14px;
     }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: linear-gradient(135deg, #f0f6ff, #eaf1fb);
-      color: #222;
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    main {
-      background: #fff;
-      border-radius: 1rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-      max-width: 400px;
-      width: 100vw;
-      padding: 2rem 1rem 2rem 1rem;
-      text-align: center;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(180deg,#030513 0%, #071027 100%);
+      color: var(--text);
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
+      min-height: 100vh;
       align-items: center;
+      padding: 2rem 1rem;
     }
     h1 {
-      font-size: 1.7rem;
-      color: var(--primary-dark);
-      margin-bottom: 0.2rem;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      text-align: center;
     }
+    .hand { font-size: 1.5rem; margin-left: 0.3rem; }
     h2 {
-      font-size: 1.1rem;
-      color: #555;
-      font-weight: 400;
-      margin-top: 0;
-      margin-bottom: 1.2rem;
+      font-size: 1.2rem;
+      margin: 1.5rem 0 1rem 0;
+      text-align: center;
     }
-    .tool-btn {
+
+    /* Container to align welcome + cards */
+    .container {
+      max-width: 900px;
       width: 100%;
-      max-width: 320px;
-      padding: 14px;
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
-      border-radius: 8px;
+      margin: 0 auto;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+    .card-btn {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1.2rem;
       border: none;
       cursor: pointer;
-      transition: background .2s, transform .1s;
-      font-weight: 500;
-      background: var(--primary);
-      color: #fff;
+      text-align: left;
+      transition: all 0.25s ease;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .tool-btn:hover, .tool-btn:focus {
-      background: var(--primary-dark);
-      transform: scale(1.02);
-    }
-    .coming-btn {
-      background: var(--coming);
-      color: var(--coming-text);
-      cursor: not-allowed;
-      border: 1px solid #dbe7fa;
+    .card-btn h3 {
+      font-size: 1.1rem;
       margin-bottom: 0.5rem;
-      font-size: 1rem;
-      font-weight: 500;
-      border-radius: 8px;
-      width: 100%;
-      max-width: 320px;
-      padding: 14px;
-      opacity: 0.8;
     }
-    @media (max-width: 600px) {
-      main { padding: 1rem; border-radius: 0.7rem; max-width: 98vw;}
-      h1 { font-size: 1.2rem;}
-      h2 { font-size: 0.95rem;}
-      .tool-btn, .coming-btn { font-size: 0.95rem; padding: 10px; }
+    .card-btn p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .card-btn:hover,
+    .card-btn:focus {
+      outline: none;
+      background: rgba(47,125,246,0.08);
+      border: 1px solid var(--primary);
+      box-shadow: 0 0 10px rgba(47,125,246,0.4);
+      transform: translateY(-3px);
+    }
+    .card-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    /* Welcome box */
+    .welcome-box {
+      width: 100%;
+      margin: 1rem 0 2rem 0;
+      padding: 2rem;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(47,125,246,0.12), rgba(124,92,255,0.08));
+      border: 1px solid rgba(47,125,246,0.2);
+      box-shadow: 0 6px 24px rgba(47,125,246,0.12);
+      text-align: center;
+    }
+    .welcome-box h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0 0 0.6rem 0;
+    }
+    .welcome-box p {
+      color: #95a0b8;
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    .footer {
+      margin-top: auto;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .footer span {
+      color: #ff6b6b;
+      margin: 0 4px;
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Welcome to Excel Helper</h1>
-    <h2>by Aranix</h2>
-    <button class="tool-btn" onclick="location.href='smart-merge.html'">Smart Merge</button>
-    <button class="coming-btn" disabled>Other tools coming soon...</button>
-    <button class="coming-btn" disabled>Other tools coming soon...</button>
-  </main>
+  
+  <!-- Brand Title -->
+  <h1 style="
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.8rem;
+    background: linear-gradient(90deg, #2f7df6, #7c5cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  ">
+    Aranix Helper
+  </h1>
+
+  <!-- Main content inside container -->
+  <div class="container">
+
+    <!-- Welcome Box -->
+    <div class="welcome-box">
+      <h2>Welcome back <span style="font-size:1.4rem;">👋</span></h2>
+      <p>Ready to process your Excel files? Choose a tool below to get started.</p>
+    </div>
+
+    <!-- Quick Start -->
+    <h2>Quick Start</h2>
+    <div class="cards">
+      <button class="card-btn" onclick="location.href='smart-merge.html'">
+        <h3>Smart Merge</h3>
+        <p>Combine multiple Excel files with intelligent matching</p>
+      </button>
+      <button class="card-btn" disabled>
+        <h3>Smart Format Changer</h3>
+        <p>Change format of your files as per your desired structure</p>
+      </button>
+      <button class="card-btn" disabled>
+        <h3>New Tools Coming Soon</h3>
+        <p>Stay tuned for more features</p>
+      </button>
+      <button class="card-btn" disabled>
+        <h3>New Tools Coming Soon</h3>
+        <p>Stay tuned for more features</p>
+      </button>
+      <button class="card-btn" disabled>
+        <h3>New Tools Coming Soon</h3>
+        <p>Stay tuned for more features</p>
+      </button>
+      <button class="card-btn" disabled>
+        <h3>New Tools Coming Soon</h3>
+        <p>Stay tuned for more features</p>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">Made with <span>❤️</span> by Aranix</div>
 </body>
 </html>
