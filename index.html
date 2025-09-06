@@ -190,13 +190,21 @@
 
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "merged.xlsx";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        statusText.textContent = "✅ File merged successfully! Download started.";
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+        if (isMobile) {
+          window.open(url, "_blank"); // mobile fallback
+          statusText.textContent = "✅ File merged successfully! Opened in new tab.";
+        } else {
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "merged.xlsx";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          statusText.textContent = "✅ File merged successfully! Download started.";
+        }
+
         statusText.className = "success";
       } catch (err) {
         statusText.textContent = "⚠️ Failed: " + err.message;
