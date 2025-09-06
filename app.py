@@ -21,13 +21,13 @@ def merge_files():
 
     for i, f in enumerate(files):
         try:
-            # Try Excel first (read-only for big files)
+            # Try Excel first
             df = pd.read_excel(f, engine="openpyxl")
         except Exception:
-            # If not Excel, reset pointer and try CSV (chunked read)
+            # Reset pointer and try CSV
             f.seek(0)
             chunks = []
-            for chunk in pd.read_csv(f, chunksize=200000):  # read 200k rows at a time
+            for chunk in pd.read_csv(f, chunksize=100000):  # stream in 100k rows
                 chunks.append(chunk)
             df = pd.concat(chunks, ignore_index=True)
 
@@ -37,32 +37,29 @@ def merge_files():
         if i == 0:
             base_order = list(df.columns)
 
+        # Track new extra columns
         for col in df.columns:
             if col not in base_order and col not in seen_extra_cols:
                 seen_extra_cols.append(col)
 
-    # Final column order: base headers first, then extras
+    # Final column order = base headers first, then extras
     final_cols = list(base_order)
     final_cols.extend([c for c in seen_extra_cols if c not in final_cols])
 
-    # Reindex all dfs to same columns
+    # Align all DataFrames
     aligned = [df.reindex(columns=final_cols) for df in dfs]
 
     # Merge safely
     merged_df = pd.concat(aligned, ignore_index=True, sort=False)
     merged_df = merged_df.fillna("")  # blanks instead of NaN
 
-    # Save to temp file
+    # Save to temp Excel file for user
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx")
     temp_file.close()
     merged_df.to_excel(temp_file.name, index=False)
 
     return send_file(temp_file.name, as_attachment=True, download_name="merged.xlsx")
 
-
-@app.route("/", methods=["GET"])
-def home():
-    return "✅ Merge API is running!"
 
 
 # --- SMART FORMAT CHANGER ROUTES --- #
