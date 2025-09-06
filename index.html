@@ -3,107 +3,176 @@
 <head>
   <meta charset="UTF-8">
   <title>Smart Merge by Aranix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --primary: #1976d2;
+      --primary-dark: #0d47a1;
+      --success: #0c9c3f;
+      --error: #d32f2f;
+      --bg-gradient: linear-gradient(135deg, #f0f6ff, #eaf1fb);
+    }
     body {
       font-family: "Segoe UI", Arial, sans-serif;
-      background-color: #f8fbff;
+      background: var(--bg-gradient);
       color: #1e1e2f;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    main {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      max-width: 400px;
+      width: 100vw;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
     }
-
     h1 {
-      color: #0d47a1; /* Deep blue */
-      margin-bottom: 0.3rem;
+      color: var(--primary-dark);
+      margin-bottom: 0.2rem;
+      font-size: 2rem;
     }
-
     h2 {
-      color: #444;
-      font-weight: normal;
+      color: #555;
+      font-weight: 400;
       margin-top: 0;
-      margin-bottom: 2rem;
+      margin-bottom: 1.2rem;
+      font-size: 1rem;
     }
-
-    .card {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 380px;
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--primary);
     }
-
+    .input-group {
+      width: 100%;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
     input[type="file"] {
-      margin: 1rem 0;
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      background: #f7f9fc;
+      font-size: 1rem;
     }
-
+    .file-list {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: #444;
+    }
     button {
-      background-color: #0d47a1;
+      background: var(--primary);
       color: #fff;
       border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
+      padding: 12px 20px;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 1rem;
-      transition: background 0.2s ease;
+      width: 100%;
+      transition: background 0.3s, transform 0.1s;
     }
-
-    button:hover {
-      background-color: #1565c0;
+    button:disabled {
+      background: #b3c1d1;
+      cursor: not-allowed;
     }
-
+    button:hover:not(:disabled), button:focus:not(:disabled) {
+      background: var(--primary-dark);
+      transform: scale(1.02);
+    }
     #status {
       margin-top: 1rem;
       font-size: 0.95rem;
+      min-height: 1.5em;
       color: #444;
     }
-
-    .success {
-      color: #0c9c3f;
+    .success { color: var(--success); }
+    .error { color: var(--error); }
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #eee;
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
     }
-
-    .error {
-      color: #d32f2f;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @media (max-width: 600px) {
+      main {
+        padding: 1rem;
+        border-radius: 0.7rem;
+        max-width: 98vw;
+      }
+      h1 { font-size: 1.3rem; }
+      h2 { font-size: 0.9rem; }
+      button { font-size: 0.95rem; padding: 10px 16px; }
     }
   </style>
 </head>
 <body>
-  <div class="card">
+  <main>
     <h1>Smart Merge</h1>
     <h2>by Aranix</h2>
-
-    <form id="uploadForm">
-      <input type="file" name="files" id="files" multiple required>
-      <br>
-      <button type="submit">Merge Files</button>
+    <form id="uploadForm" autocomplete="off">
+      <div class="input-group">
+        <label for="files">Choose files to merge</label>
+        <input type="file" name="files" id="files" multiple required>
+        <div class="file-list" id="fileList"></div>
+      </div>
+      <button type="submit" id="mergeBtn" disabled>Merge Files</button>
     </form>
-
     <p id="status"></p>
-  </div>
-
+  </main>
   <script>
+    const filesInput = document.getElementById("files");
+    const fileList = document.getElementById("fileList");
     const form = document.getElementById("uploadForm");
     const statusText = document.getElementById("status");
+    const mergeBtn = document.getElementById("mergeBtn");
+
+    filesInput.addEventListener("change", () => {
+      if (filesInput.files.length) {
+        let names = [];
+        for (let i = 0; i < filesInput.files.length; i++) {
+          names.push(filesInput.files[i].name);
+        }
+        fileList.textContent = "Selected: " + names.join(", ");
+        mergeBtn.disabled = false;
+      } else {
+        fileList.textContent = "";
+        mergeBtn.disabled = true;
+      }
+    });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const files = document.getElementById("files").files;
-      if (!files.length) {
+      if (!filesInput.files.length) {
         alert("Please select at least one file!");
         return;
       }
 
-      statusText.textContent = "⏳ Uploading and merging...";
+      statusText.innerHTML = '<span class="spinner"></span>Uploading and merging...';
       statusText.className = "";
 
+      mergeBtn.disabled = true;
+
       const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        formData.append("files", files[i]);
+      for (let i = 0; i < filesInput.files.length; i++) {
+        formData.append("files", filesInput.files[i]);
       }
 
       try {
@@ -115,6 +184,7 @@
         if (!response.ok) {
           statusText.textContent = "❌ Error merging files.";
           statusText.className = "error";
+          mergeBtn.disabled = false;
           return;
         }
 
@@ -132,9 +202,8 @@
         statusText.textContent = "⚠️ Failed: " + err.message;
         statusText.className = "error";
       }
+      mergeBtn.disabled = false;
     });
   </script>
 </body>
 </html>
-
-
