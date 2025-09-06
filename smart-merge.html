@@ -19,17 +19,22 @@
       --container-w:900px;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      min-height:100vh;
+    body {
+      margin: 0;
+      min-height: 100vh;
       font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
       background: linear-gradient(180deg,var(--bg-1),var(--bg-2));
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      display:flex;
-      justify-content:center;
-      padding:32px 18px;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    
+      /* Make the page layout vertical so footer sits at bottom */
+      display: flex;
+      flex-direction: column;    /* <--- add this */
+      align-items: center;       /* keep content centered horizontally */
+      justify-content: flex-start;
+      padding: 32px 18px;
     }
+
 
     /* main centered column */
     .container{
@@ -179,6 +184,15 @@
     }
     .file-chip button:hover{ color:#ff6b6b; background: rgba(255,255,255,0.02) }
     
+    .footer {
+      margin-top: auto;
+      font-size: 0.9rem;
+      color: var(--muted);
+      width: 100%;
+      text-align: center;   /* center footer text */
+    }
+
+    
     /* responsive: chips become full width on very small screens */
     @media (max-width:420px){
       .file-chip{ flex: 0 1 100%; min-width: auto; }
@@ -210,6 +224,7 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+    
 
   </style>
 </head>
@@ -386,6 +401,5 @@
   <div class="footer">Made with <span>❤️</span> by Aranix</div>
 </body>
 </html>
-
 
 
