@@ -22,41 +22,80 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      align-items: center;
-      padding: 2rem 1rem;
-    }
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    .hand { font-size: 1.5rem; margin-left: 0.3rem; }
-    h2 {
-      font-size: 1.2rem;
-      margin: 1.5rem 0 1rem 0;
-      text-align: center;
     }
 
-    /* Container to align welcome + cards */
-    .container {
-      max-width: 900px;
+    /* Navbar */
+    .navbar {
       width: 100%;
-      margin: 0 auto;
-      padding: 0 20px;
-      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+    .navbar img {
+      height: 40px;
+      width: auto;
+    }
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+    }
+    .nav-actions button {
+      background: transparent;
+      border: 1px solid var(--primary);
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .nav-actions button.signup {
+      background: var(--primary);
+      border: none;
+    }
+    .nav-actions button:hover {
+      background: rgba(47,125,246,0.15);
+    }
+    .nav-actions .signup:hover {
+      background: var(--primary-dark);
     }
 
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      margin: 2rem auto 3rem;
+      max-width: 900px;
+      padding: 0 1rem;
+    }
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Cards Grid */
+    .cards-wrapper {
+      width: 100%;
+      padding: 0 2rem;
+      margin-bottom: 2rem;
+    }
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
-      width: 100%;
-      margin-bottom: 2rem;
     }
     .card-btn {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 1.2rem;
+      padding: 1.5rem;
       border: none;
       cursor: pointer;
       text-align: left;
@@ -64,15 +103,18 @@
       color: var(--text);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
+      min-height: 180px; /* squarish */
     }
     .card-btn h3 {
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 0 0 0.6rem 0;
     }
     .card-btn p {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--muted);
+      line-height: 1.4;
     }
     .card-btn:hover,
     .card-btn:focus {
@@ -87,21 +129,37 @@
       opacity: 0.6;
     }
 
-    /* Welcome box */
+    /* Footer */
+    .footer {
+      margin-top: auto;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .footer span {
+      color: #ff6b6b;
+      margin: 0 4px;
+    }
+    
+    
     .welcome-box {
       width: 100%;
-      margin: 1rem 0 2rem 0;
+      margin-top: 2rem;     /* gap below navbar */
+      margin-bottom: 0.0rem;
       padding: 2rem;
-      border-radius: 14px;
+      border-radius: 10px;
       background: linear-gradient(135deg, rgba(47,125,246,0.12), rgba(124,92,255,0.08));
       border: 1px solid rgba(47,125,246,0.2);
-      box-shadow: 0 6px 24px rgba(47,125,246,0.12);
+      box-shadow: 0 6px 24px rgba(47,125,246,0.15);
       text-align: center;
     }
+
     .welcome-box h2 {
       font-size: 1.6rem;
       font-weight: 700;
-      margin: 0 0 0.6rem 0;
+      margin-bottom: 0.6rem;
     }
     .welcome-box p {
       color: #95a0b8;
@@ -109,62 +167,53 @@
       margin: 0;
     }
 
-    .footer {
-      margin-top: auto;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-    .footer span {
-      color: #ff6b6b;
-      margin: 0 4px;
-    }
+    
   </style>
 </head>
 <body>
 
-  <!-- Brand Logo Only -->
-  <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
-    <img src="/AranixHelper_logo.png" alt="Aranix Helper Logo" style="height: 60px; width: auto;">
+  <!-- Navbar -->
+  <div class="navbar">
+    <img src="/AranixHelper_logo.png" alt="Aranix Helper Logo">
+    <div class="nav-actions">
+      <button class="login">Login</button>
+      <button class="signup">Sign Up</button>
+    </div>
   </div>
 
-  <!-- Main content inside container -->
-  <div class="container">
-
-    <!-- Welcome Box -->
+  <!-- Welcome Box -->
+  <div class="cards-wrapper">
     <div class="welcome-box">
       <h2>Welcome <span style="font-size:1.4rem;">👋</span></h2>
-      <p>Discover simple & useful tools - built to make everyday tasks easier. No coding. No Excel headaches.</p>
+      <p>Discover simple &amp; useful tools — built to make everyday tasks easier. 
+      No coding, no complexity — just smart solutions in one place.</p>
     </div>
+  </div>
 
-    <!-- Quick Start -->
-    <h2>Quick Start</h2>
+  <!-- Cards -->
+  <div class="cards-wrapper">
     <div class="cards">
       <button class="card-btn" onclick="location.href='smart-merge.html'">
         <h3>Smart Merge</h3>
-        <p>Combine multiple Excel files with intelligent matching</p>
+        <p>Combine multiple files with intelligent matching</p>
       </button>
       <button class="card-btn" onclick="location.href='smart-format-changer.html'">
         <h3>Smart Format Changer</h3>
         <p>Change format of your files to your desired base structure</p>
       </button>
       <button class="card-btn" disabled>
-        <h3>New Tools Coming Soon</h3>
-        <p>Stay tuned for more features</p>
+        <h3>Smart Separator</h3>
+        <p>Coming soon</p>
       </button>
       <button class="card-btn" disabled>
-        <h3>New Tools Coming Soon</h3>
-        <p>Stay tuned for more features</p>
+        <h3>VCF Generator</h3>
+        <p>Coming soon</p>
       </button>
       <button class="card-btn" disabled>
-        <h3>New Tools Coming Soon</h3>
-        <p>Stay tuned for more features</p>
-      </button>
-      <button class="card-btn" disabled>
-        <h3>New Tools Coming Soon</h3>
-        <p>Stay tuned for more features</p>
+        <h3>More Tools</h3>
+        <p>Stay tuned</p>
       </button>
     </div>
-
   </div>
 
   <!-- Footer -->
