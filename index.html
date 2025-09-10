@@ -222,7 +222,7 @@
   <!-- Chatbot Widget -->
   <div class="chatbot-widget">
     <div class="chatbot-icon" id="chatToggle" onclick="toggleChat()">
-      <img src="ab45813c-32fc-43b5-ade1-b9401d0d8009.png" alt="Chatbot Icon" id="chatIcon">
+      <img src="chat-bot.png" alt="Chatbot Icon" id="chatIcon">
     </div>
     <div class="chatbot-window" id="chatWindow">
       <div class="chatbot-header">
@@ -245,11 +245,10 @@
   /* Floating Icon */
   .chatbot-widget {
     position: fixed;
-    bottom: 20px;
+    bottom: 80px;   /* instead of 20px */
     right: 20px;
-    font-family: Inter, "Segoe UI", Arial, sans-serif;
-    z-index: 1000;
   }
+
   .chatbot-icon {
     background: var(--primary);
     width: 55px;
@@ -296,7 +295,7 @@
   }
   .chatbot-header {
     background: var(--primary);
-    color: #005;
+    color: #fff;
     padding: 10px;
     border-radius: 12px 12px 0 0;
     display: flex;
