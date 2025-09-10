@@ -218,5 +218,178 @@
 
   <!-- Footer -->
   <div class="footer">Made with <span>❤️</span> by Aranix</div>
+
+  <!-- Chatbot Widget -->
+  <div class="chatbot-widget">
+    <div class="chatbot-icon" id="chatToggle" onclick="toggleChat()">
+      <img src="ab45813c-32fc-43b5-ade1-b9401d0d8009.png" alt="Chatbot Icon" id="chatIcon">
+    </div>
+    <div class="chatbot-window" id="chatWindow">
+      <div class="chatbot-header">
+        <img src="chat-bot.png" alt="Bot Logo">
+        <span>Aranix Helper Bot</span>
+      </div>
+      <div class="chatbot-body" id="chatBody">
+        <div class="chatbot-message bot">
+          Hi there! Looking for the right tool? <br>
+          I’ll guide you to the one that best fits your task.
+        </div>
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="chatInput" placeholder="Type your message...">
+      </div>
+    </div>
+  </div>
+  
+  <style>
+  /* Floating Icon */
+  .chatbot-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    z-index: 1000;
+  }
+  .chatbot-icon {
+    background: var(--primary);
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease;
+  }
+  .chatbot-icon:hover {
+    transform: scale(1.05);
+  }
+  .chatbot-icon img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  /* Chat Window */
+  .chatbot-window {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 320px;
+    background: #ffffff;
+    border: 1px solid rgba(47,125,246,0.4);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    color: #000;
+  
+    /* animation setup */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .chatbot-window.show {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chatbot-header {
+    background: var(--primary);
+    color: #005;
+    padding: 10px;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+  }
+  .chatbot-header img {
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    background: #fff;
+    padding: 2px;
+  }
+  .chatbot-body {
+    padding: 14px;
+    max-height: 280px;
+    overflow-y: auto;
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .chatbot-message {
+    padding: 10px 14px;
+    border-radius: 18px;
+    line-height: 1.4;
+    max-width: 80%;
+  }
+  .chatbot-message.bot {
+    background: rgba(47,125,246,0.15);
+    color: #000;
+    align-self: flex-start;
+  }
+  .chatbot-message.user {
+    background: #1877f2;   /* Facebook Messenger blue */
+    color: #fff;      /* <-- change this */
+    align-self: flex-end;
+  }
+  .chatbot-input {
+    padding: 10px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+  }
+  .chatbot-input input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    background: #f5f5f5;
+    color: #000;
+  }
+  .chatbot-input input::placeholder {
+    color: #666;
+  }
+  </style>
+  
+  <script>
+  function toggleChat() {
+    const chat = document.getElementById("chatWindow");
+    const chatIcon = document.getElementById("chatIcon");
+  
+    if (chat.classList.contains("show")) {
+      chat.classList.remove("show");
+      setTimeout(() => (chat.style.display = "none"), 300); // wait for animation
+      chatIcon.src = "ab45813c-32fc-43b5-ade1-b9401d0d8009.png"; // bot icon
+    } else {
+      chat.style.display = "flex";
+      setTimeout(() => chat.classList.add("show"), 10); // trigger animation
+      chatIcon.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='black'><path d='M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12l-4.89 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.89a1 1 0 0 0 1.41-1.41L13.41 12l4.89-4.89a1 1 0 0 0 0-1.4z'/></svg>"; // cross icon
+    }
+  }
+  
+  // Handle sending message on Enter
+  document.getElementById("chatInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter" && this.value.trim() !== "") {
+      e.preventDefault();
+      const chatBody = document.getElementById("chatBody");
+  
+      // Create user message bubble
+      const userMsg = document.createElement("div");
+      userMsg.classList.add("chatbot-message", "user");
+      userMsg.textContent = this.value;
+      chatBody.appendChild(userMsg);
+  
+      // Clear input
+      this.value = "";
+  
+      // Auto scroll to bottom
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  });
+  </script>
+
+  
 </body>
 </html>
